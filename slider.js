@@ -30,7 +30,7 @@ const getLastSlide = ()=> {
 }
 
 right.addEventListener("click", () => {
-    slideNumber < lenght ? nextSlide() : getFirstSlideSlide() 
+    slideNumber < lenght ? nextSlide() : getFirstSlide() 
 });
 
 left.addEventListener("click", ()=> {
