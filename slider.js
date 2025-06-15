@@ -1,64 +1,56 @@
-const left = document.querySelector(".arrow-left")
-const right = document.querySelector(".arrow-right")
-const slider = document.querySelector(".slider")
-const images = document.querySelectorAll(".image")
-const bottom = document.querySelector(".bottom")
+const left = document.querySelector(".arrow-left");
+const right = document.querySelector(".arrow-right");
+const slider = document.querySelector(".slider");
+const images = document.querySelectorAll(".image");
+const bottom = document.querySelector(".bottom");
+
+let currentIndex = 0;
 
 
-let slideNumber = 1;
-
-const lenght = images.length
-
-const nextSlide = ()=> {
-    slider.style.transform = `translateX(-${slideNumber * 800}px)`;
-    slideNumber++;
-}
-
-const prevSlide = ()=> {
-    slider.style.transform = `translateX(-${(slideNumber - 2) * 800}px)`;
-    slideNumber--;
-}
-
-const getFirstSlide = ()=> {
-    slider.style.transform = `translateX(0px)`;
-    slideNumber = 1;
-}
-
-const getLastSlide = ()=> {
-    slider.style.transform = `translateX(- ${(lenght -1) * 800 }px)`;
-    slideNumber = lenght;
-}
-
-right.addEventListener("click", () => {
-    slideNumber < lenght ? nextSlide() : getFirstSlide() 
+images.forEach((_, i) => {
+  const dot = document.createElement("div");
+  dot.classList.add("button");
+  if (i === 0) dot.classList.add("active");
+  bottom.appendChild(dot);
 });
 
-left.addEventListener("click", ()=> {
-    slideNumber > 1 ? prevSlide() : getLastSlide()
-})
+const dots = document.querySelectorAll(".button");
 
 
-for( let i = 0; i<lenght; i++) {
-    const div = document.createElement("div")
-    div.className = "button"
-    bottom.appendChild(div)
+function updateDots(index) {
+  dots.forEach(dot => dot.classList.remove("active"));
+  dots[index].classList.add("active");
 }
 
-const buttons = document.querySelectorAll(".button")
-buttons[0].style.backgroundColor = "white"
 
-const resetBG= ()=> {
-    buttons.forEach(button=> {
-        button.style.backgroundColor = `transparent`
-    })
+function updateSlider() {
+  const width = document.querySelector(".frame").clientWidth;
+  slider.style.transform = `translateX(-${currentIndex * width}px)`;
+  updateDots(currentIndex);
 }
 
-buttons.forEach((button,i)=>{
-    button.addEventListener("click", ()=> {
-        resetBG()
-        slider.style.transform = `translateX(-${ i * 800}px)`
-        slideNumber = i + 1;
-        button.style.backgroundColor = "white"
 
-    })
-})
+right.addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateSlider();
+});
+
+
+left.addEventListener("click", () => {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateSlider();
+});
+
+
+dots.forEach((dot, index) => {
+  dot.addEventListener("click", () => {
+    currentIndex = index;
+    updateSlider();
+  });
+});
+
+
+
+
+
+
